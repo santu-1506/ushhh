@@ -79,6 +79,9 @@ KUBERNETES - MINIKUBE :
 JENKINS :
 
 
+script pipeline: 
+
+
 build periodically - schedule : H * * * *
 
 
@@ -112,3 +115,38 @@ pipeline {
         }
     }
 }
+
+
+
+
+
+
+2 pipeline:
+
+build pipeline plugin
+copy artifact plugin
+
+1st part:
+
+build steps: 
+invoke -> clean
+invoke -> install
+
+postbuild:
+archive -> **/*
+build other
+
+2nd part:
+
+delete workspace before
+
+build steps:
+copy artifacts -> **/*
+invoke -> test
+
+postbuild:
+
+archive -> **/*
+
+
+
