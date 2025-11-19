@@ -79,43 +79,35 @@ KUBERNETES - MINIKUBE :
 JENKINS :
 
 
+build periodically - schedule : H * * * *
+
+
 pipeline {
     agent any
-
-    tools {
-        maven 'MAVEN_HOME'   // Correct name
+    tools{
+        maven 'MAVEN_HOME'
     }
-
     stages {
-
-        stage('Clone Repo') {
+        stage('git repo & clean') {
             steps {
-                bat 'if exist Smart-Assessment-Hub rmdir /S /Q Smart-Assessment-Hub'
-                bat 'git clone https://github.com/krishnatejacoder/Smart-Assessment-Hub'
+                //bat "rmdir  /s /q mavenjava"
+                bat "git clone https://github.com/adityapanyala/myjavaapp.git"
+                bat "mvn clean -f myjavaapp"
             }
         }
-
-        stage('Clean') {
+        stage('install') {
             steps {
-                bat 'mvn -f Smart-Assessment-Hub/pom.xml clean'
+                bat "mvn install -f myjavaapp" 
             }
         }
-
-        stage('Install') {
+        stage('test') {
             steps {
-                bat 'mvn -f Smart-Assessment-Hub/pom.xml install'
+                bat "mvn test -f myjavaapp"
             }
         }
-
-        stage('Test') {
+        stage('package') {
             steps {
-                bat 'mvn -f Smart-Assessment-Hub/pom.xml test'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                bat 'mvn -f Smart-Assessment-Hub/pom.xml package'
+                bat "mvn package -f myjavaapp"
             }
         }
     }
