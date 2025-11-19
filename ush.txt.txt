@@ -1,0 +1,122 @@
+AWS :
+
+### steps
+
+1. go to modules
+2. select the launch aws learner lab
+3. then start lab
+4. wait till aws is green then click on it 
+5. go to EC2 and then launch instance 
+6. give name tag, then choose ubuntu, then generate a key pair, then check the firewall add anywhere all traffic and then launch
+7. once the instance is created, click on the instance and then click on connect
+8. int the cli tht pops up type the following commands
+    1. sudo su
+    2. sudo apt-get update
+    3. sudo apt-get install [docker.io](http://docker.io) enter y
+    4. sudo docker —version
+    5. sudo docker images
+    6. sudo docker ps
+    7. git clone http of the maven web application
+    8. cd folder name
+    9. ls
+    10. nano Dockerfile
+    11. sudo docker build -t img1  .
+    12. sudo docker run -d -p img1 8080:8080 img1
+    13. copy the public ip
+    14. got to incog ip:portnumber
+    15. exit
+
+-----------------------------------------------------------------------------------------------
+
+
+
+NAGIOS :
+
+
+docker pull jasonrivers/nagios
+docker run -d -p 3000:80 jasonrivers/nagios
+
+username : nagiosadmin
+password : nagios
+
+---------------------------------------------------------------------------------------------------
+
+
+KUBERNETES - MINIKUBE :
+
+
+
+
+### pre requisites
+
+1. docker desktop should be running
+2. should have a docker image
+
+### steps
+
+1. open your docker desktop
+2. minikube start
+    1. if it doesnt work run these
+    2. minikube start —driver=hyperv
+    3. minikube start —driver=docker
+3. minikube start
+4. minikube status
+5. kubectl create deployment mynginx —image=nginx
+6. kubectl get deployments
+7. kubectl get pods
+8. kubectl describe pods
+9. kubectl expose deployment mynginx —type=NodePort —port=80 -target-port=80
+10. kubectl get service mynginx
+11. kubectl port-forward svc/mynginx 80:80
+12. kubectl get deployment
+13. kubectl scale deployment mynginx
+14. kubectl get pods
+
+
+--------------------------------------------------------------------------------------------------------
+
+
+JENKINS :
+
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'MAVEN_HOME'   // Correct name
+    }
+
+    stages {
+
+        stage('Clone Repo') {
+            steps {
+                bat 'if exist Smart-Assessment-Hub rmdir /S /Q Smart-Assessment-Hub'
+                bat 'git clone https://github.com/krishnatejacoder/Smart-Assessment-Hub'
+            }
+        }
+
+        stage('Clean') {
+            steps {
+                bat 'mvn -f Smart-Assessment-Hub/pom.xml clean'
+            }
+        }
+
+        stage('Install') {
+            steps {
+                bat 'mvn -f Smart-Assessment-Hub/pom.xml install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat 'mvn -f Smart-Assessment-Hub/pom.xml test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                bat 'mvn -f Smart-Assessment-Hub/pom.xml package'
+            }
+        }
+    }
+}
